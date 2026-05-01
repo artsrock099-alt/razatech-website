@@ -296,8 +296,18 @@ app.delete('/api/messages/:id', async (req, res) => {
 });
 
 // ─── FALLBACK ─────────────────────────────────
+// Static files are served by express.static above.
+// This only catches clean URLs like /about, /services etc.
+// Admin panel pages are served as static files — don't interfere.
 app.get('*', (req, res) => {
-  if (req.path.includes('.')) return res.status(404).send('Not found');
+  const p = req.path;
+  // Let static file requests 404 naturally
+  if (p.includes('.')) return res.status(404).send('Not found');
+  // Admin panel — serve the admin index
+  if (p.startsWith('/admin')) {
+    return res.sendFile(path.join(__dirname, '..', 'public', 'admin', 'index.html'));
+  }
+  // Everything else — serve public home page
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
@@ -306,17 +316,15 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error.' });
 });
 
-app.listen(PORT, () => {
+// Render requires binding to 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
   console.log('');
-  console.log('🚀 RazaTech v4 running!');
+  console.log('RazaTech v4 running!');
   console.log('------------------------------------------');
-  console.log('  Public site  -> http://localhost:' + PORT);
-  console.log('  Admin panel  -> http://localhost:' + PORT + '/admin/');
-  console.log('  Health check -> http://localhost:' + PORT + '/api/health');
-  console.log('------------------------------------------');
-  console.log('  All content is now served from MySQL.');
-  console.log('  Admin changes reflect instantly on the');
-  console.log('  public site — no manual editing needed.');
+  console.log('  Port:        ' + PORT);
+  console.log('  Public site: /');
+  console.log('  Admin panel: /admin/');
+  console.log('  Health:      /api/health');
   console.log('------------------------------------------');
   console.log('');
 });
