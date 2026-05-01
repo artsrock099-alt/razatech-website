@@ -1,97 +1,85 @@
 // =============================================
-// RAZATECH v4 — server/db.js  (Railway Fixed)
+// RAZATECH v4 — server/db.js  (FIXED)
 //
-// Railway provides a MySQL database that already
-// exists. We must NOT run CREATE DATABASE or USE.
-// We connect directly to the given database and
-// only CREATE TABLEs if they don't exist.
-//
-// Railway env vars are named differently:
-//   MYSQLHOST, MYSQLUSER, MYSQLPASSWORD,
-//   MYSQLDATABASE, MYSQLPORT
-// We support BOTH Railway and local .env names.
+// FIX: CREATE DATABASE / CREATE TABLE / USE
+// cannot use prepared statements (execute).
+// We use a single direct connection with query()
+// for all schema setup, then export a pool for
+// normal app queries.
 // =============================================
 const mysql = require('mysql2/promise');
 
-// Support Railway variable names AND local .env names
-const DB_CONF = {
-  host:     process.env.MYSQLHOST     || process.env.DB_HOST     || 'localhost',
-  user:     process.env.MYSQLUSER     || process.env.DB_USER     || 'root',
-  password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || '',
-  database: process.env.MYSQLDATABASE || process.env.DB_NAME     || 'razatech_db',
-  port:     parseInt(process.env.MYSQLPORT || process.env.DB_PORT || '3306'),
+const DB_NAME = process.env.DB_NAME || 'razatech_db';
+const CONF = {
+  host:     process.env.DB_HOST     || 'localhost',
+  user:     process.env.DB_USER     || 'root',
+  password: process.env.DB_PASSWORD || 'Razak+10',
+  port:     parseInt(process.env.DB_PORT) || 3306,
   charset:  'utf8mb4',
-  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : false,
-  waitForConnections: true,
-  connectionLimit:    10,
-  connectTimeout:     30000,
+  multipleStatements: false,
 };
 
-console.log('[DB] Connecting to:', DB_CONF.host + ':' + DB_CONF.port + '/' + DB_CONF.database);
-
-// Export pool immediately — used by all API routes
-const pool = mysql.createPool(DB_CONF);
+// App pool — used by all API routes
+const pool = mysql.createPool({ ...CONF, database: DB_NAME, waitForConnections: true, connectionLimit: 10 });
 module.exports = pool;
 
-// ─── AUTO INIT ────────────────────────────────
-// Connect directly (not via pool) to run CREATE TABLE
-// Do NOT run CREATE DATABASE or USE — Railway manages that
+// ─── AUTO INIT (runs once on startup) ─────────
 (async () => {
+  // Use a plain connection (not pool) so DDL works
   let conn;
   try {
-    conn = await mysql.createConnection(DB_CONF);
-    console.log('[DB] Connected successfully.');
+    conn = await mysql.createConnection(CONF);   // no database selected yet
+
+    // query() works for DDL; execute() does NOT
+    await conn.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+    await conn.query(`USE \`${DB_NAME}\``);
+    console.log(`[DB] Database "${DB_NAME}" ready.`);
 
     await createTables(conn);
     await seedData(conn);
+
     await conn.end();
-    console.log('[DB] Initialization complete.');
+    console.log('[DB] Init complete — all systems go.');
 
   } catch (err) {
     if (conn) try { await conn.end(); } catch {}
-
-    console.error('');
-    console.error('==============================================');
-    console.error('  DATABASE CONNECTION FAILED');
+    console.error('\n==============================================');
+    console.error('  DATABASE INIT FAILED');
     console.error('==============================================');
     console.error('  Error:', err.message);
-    console.error('');
-    console.error('  If on Railway:');
-    console.error('  1. Go to your Railway project');
-    console.error('  2. Click your MySQL database service');
-    console.error('  3. Go to "Variables" tab');
-    console.error('  4. Click "Add to service" next to your');
-    console.error('     Node.js service so it gets the vars');
-    console.error('');
-    console.error('  Required vars (Railway auto-provides):');
-    console.error('  MYSQLHOST, MYSQLUSER, MYSQLPASSWORD,');
-    console.error('  MYSQLDATABASE, MYSQLPORT');
-    console.error('==============================================');
-    console.error('');
+    console.error('\n  CHECKLIST:');
+    console.error('  1. Is MySQL running?');
+    console.error('     Windows : Open Services -> start MySQL');
+    console.error('     Mac     : brew services start mysql@8.0');
+    console.error('     Linux   : sudo systemctl start mysql');
+    console.error('\n  2. Open .env and set:');
+    console.error('     DB_HOST=localhost');
+    console.error('     DB_USER=root');
+    console.error('     DB_PASSWORD=your_actual_password');
+    console.error('\n  3. Test connection manually:');
+    console.error('     mysql -u root -p');
+    console.error('==============================================\n');
   }
 })();
 
-// ─── CREATE TABLES ────────────────────────────
+// ─── CREATE TABLES (DDL — must use query()) ───
 async function createTables(conn) {
-  // contacts
   await conn.query(`
     CREATE TABLE IF NOT EXISTS contacts (
       id         INT           NOT NULL AUTO_INCREMENT,
       name       VARCHAR(255)  NOT NULL,
       email      VARCHAR(255)  NOT NULL,
+      service    VARCHAR(255)  DEFAULT '',
       phone      VARCHAR(50)   DEFAULT '',
       whatsapp   VARCHAR(50)   DEFAULT '',
-      service    VARCHAR(255)  DEFAULT '',
       message    TEXT          NOT NULL,
       is_read    TINYINT(1)    DEFAULT 0,
       created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
-      INDEX idx_read    (is_read),
+      INDEX idx_read (is_read),
       INDEX idx_created (created_at)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
-  // projects
   await conn.query(`
     CREATE TABLE IF NOT EXISTS projects (
       id          INT          NOT NULL AUTO_INCREMENT,
@@ -104,10 +92,8 @@ async function createTables(conn) {
       sort_order  INT          DEFAULT 0,
       created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
-  // services
   await conn.query(`
     CREATE TABLE IF NOT EXISTS services (
       id          INT          NOT NULL AUTO_INCREMENT,
@@ -118,10 +104,8 @@ async function createTables(conn) {
       sort_order  INT          DEFAULT 0,
       created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
-  // clients
   await conn.query(`
     CREATE TABLE IF NOT EXISTS clients (
       id            INT          NOT NULL AUTO_INCREMENT,
@@ -135,14 +119,12 @@ async function createTables(conn) {
       sort_order    INT          DEFAULT 0,
       created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
-  // team_profile
   await conn.query(`
     CREATE TABLE IF NOT EXISTS team_profile (
       id             INT          NOT NULL AUTO_INCREMENT,
-      full_name      VARCHAR(255) DEFAULT 'Raza Muhamad',
+      full_name      VARCHAR(255) DEFAULT 'Razak Zake',
       role           VARCHAR(255) DEFAULT 'CEO & Founder',
       role_sub       VARCHAR(500) DEFAULT 'Full-Stack Developer · Blockchain Engineer · Tech Entrepreneur',
       bio1           TEXT,
@@ -152,24 +134,22 @@ async function createTables(conn) {
       stat_clients   VARCHAR(20)  DEFAULT '30+',
       stat_countries VARCHAR(20)  DEFAULT '3',
       expertise      TEXT,
-      photo          VARCHAR(255) DEFAULT '',
       linkedin       VARCHAR(500) DEFAULT '',
       github         VARCHAR(500) DEFAULT '',
       twitter        VARCHAR(500) DEFAULT '',
+      photo          VARCHAR(255) DEFAULT '',
       updated_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
-  // site_settings
   await conn.query(`
     CREATE TABLE IF NOT EXISTS site_settings (
       id              INT          NOT NULL AUTO_INCREMENT,
       company_name    VARCHAR(255) DEFAULT 'RazaTech',
       tagline         VARCHAR(500) DEFAULT 'Innovative Digital Solutions',
       email           VARCHAR(255) DEFAULT 'razatech@gmail.com',
-      phone           VARCHAR(50)  DEFAULT '+256 700 000 000',
-      whatsapp        VARCHAR(50)  DEFAULT '256700000000',
+      phone           VARCHAR(50)  DEFAULT '+256 740 072 406',
+      whatsapp        VARCHAR(50)  DEFAULT '256771437244',
       location        VARCHAR(255) DEFAULT 'Kampala, Uganda',
       stat_projects   VARCHAR(20)  DEFAULT '50+',
       stat_clients    VARCHAR(20)  DEFAULT '30+',
@@ -180,20 +160,12 @@ async function createTables(conn) {
       social_github   VARCHAR(500) DEFAULT '',
       updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
-
-  // Safely add columns that may be missing in older installs
-  try {
-    await conn.query(`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone    VARCHAR(50) DEFAULT '' AFTER service`);
-    await conn.query(`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS whatsapp VARCHAR(50) DEFAULT '' AFTER phone`);
-    await conn.query(`ALTER TABLE team_profile ADD COLUMN IF NOT EXISTS photo VARCHAR(255) DEFAULT '' AFTER expertise`);
-  } catch (e) { /* columns already exist — ignore */ }
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
 
   console.log('[DB] All tables ready.');
 }
 
-// ─── SEED DATA ────────────────────────────────
+// ─── SEED DATA (only if tables empty) ─────────
 async function seedData(conn) {
   const [[{c: pc}]] = await conn.query('SELECT COUNT(*) AS c FROM projects');
   if (pc === 0) {
@@ -205,8 +177,7 @@ async function seedData(conn) {
       ('SACCO Management System','web','Full-featured savings and credit cooperative with member management, loans and financial reports.','Node.js, MySQL, Express','🏦','linear-gradient(135deg,#0a2342,#1a5276)',5),
       ('E-Commerce Platform','web','Modern online store with product catalog, cart, payment gateway and admin dashboard.','Node.js, Express, MySQL','🛒','linear-gradient(135deg,#3b1a00,#d4680a)',6),
       ('School Management System','web','Comprehensive portal for enrollment, grading, attendance, fees and parent communication.','JavaScript, PHP, MySQL','🏫','linear-gradient(135deg,#2c0a3b,#7b29c8)',7),
-      ('Inventory Management Portal','web','Real-time stock tracking with alerts, supplier management and automated purchase orders.','React, MySQL, REST API','📦','linear-gradient(135deg,#0d3b1e,#1d7a40)',8)`
-    );
+      ('Inventory Management Portal','web','Real-time stock tracking with alerts, supplier management and automated purchase orders.','React, MySQL, REST API','📦','linear-gradient(135deg,#0d3b1e,#1d7a40)',8)`);
     console.log('[DB] Seeded projects.');
   }
 
@@ -224,8 +195,7 @@ async function seedData(conn) {
       ('📱','Mobile App Development','Cross-platform mobile applications built with React Native for iOS and Android.','React Native apps,Offline-first architecture,Push notifications,App Store deployment',9),
       ('🔒','Cybersecurity','Protect your digital assets with penetration testing and security hardening.','Penetration testing,Vulnerability scanning,SSL & encryption setup,Security awareness training',10),
       ('📊','Data Analytics & BI','Transform raw data into actionable insights with custom dashboards and reports.','Custom BI dashboards,Data visualization,Automated report generation,KPI tracking systems',11),
-      ('🤖','AI & Automation','Integrate machine learning, chatbots, and automation workflows to boost productivity.','AI chatbot integration,Business process automation,ML model deployment,OpenAI/Gemini API',12)`
-    );
+      ('🤖','AI & Automation','Integrate machine learning, chatbots, and automation workflows to boost productivity.','AI chatbot integration,Business process automation,ML model deployment,OpenAI/Gemini API',12)`);
     console.log('[DB] Seeded services.');
   }
 
@@ -239,8 +209,7 @@ async function seedData(conn) {
       ('UniPay Africa','UP','Fintech & Payments','linear-gradient(135deg,#831843,#ec4899)','','','',5),
       ('KampalaEdge','KE','IT Consulting','linear-gradient(135deg,#1e1b4b,#6366f1)','','','',6),
       ('MatrixSoft Ltd','MX','Enterprise Software','linear-gradient(135deg,#4c1d95,#8b5cf6)','','','',7),
-      ('SmartCity Corp','SC','Smart Infrastructure','linear-gradient(135deg,#1a2e05,#65a30d)','','','',8)`
-    );
+      ('SmartCity Corp','SC','Smart Infrastructure','linear-gradient(135deg,#1a2e05,#65a30d)','','','',8)`);
     console.log('[DB] Seeded clients.');
   }
 
@@ -248,9 +217,9 @@ async function seedData(conn) {
   if (tc === 0) {
     await conn.query(
       `INSERT INTO team_profile (full_name,role,role_sub,bio1,bio2,stat_years,stat_projects,stat_clients,stat_countries,expertise,linkedin,github,twitter) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-      ['Raza Muhamad','CEO & Founder',
+      ['Razak Zake','CEO & Founder',
        'Full-Stack Developer · Blockchain Engineer · Tech Entrepreneur',
-       'Raza Muhamad is the founder and CEO of RazaTech — a passionate software engineer with over 5 years of experience building digital solutions across East Africa.',
+       'Razak Zake is the founder and CEO of RazaTech — a passionate software engineer with over 5 years of experience building digital solutions across East Africa.',
        'His work includes blockchain voting systems, smart environmental monitoring platforms, civil engineering portals, and SACCO management tools.',
        '5+','50+','30+','3',
        'Full-Stack Dev,Blockchain,IoT Systems,Team Leadership,System Architecture,Entrepreneurship,Smart Contracts,Cloud & DevOps',
@@ -264,7 +233,7 @@ async function seedData(conn) {
     await conn.query(
       `INSERT INTO site_settings (company_name,tagline,email,phone,whatsapp,location,stat_projects,stat_clients,stat_years,footer_desc) VALUES (?,?,?,?,?,?,?,?,?,?)`,
       ['RazaTech','Innovative Digital Solutions','razatech@gmail.com',
-       '+256 700 000 000','256700000000','Kampala, Uganda',
+       '+256 740 072 406','256771437244','Kampala, Uganda',
        '50+','30+','5+',
        'Innovative digital solutions for businesses across East Africa and beyond.']
     );
