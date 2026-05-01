@@ -9,14 +9,18 @@
 // =============================================
 const mysql = require('mysql2/promise');
 
-const DB_NAME = process.env.DB_NAME || 'razatech_db';
+const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE || 'razatech_db';
 const CONF = {
-  host:     process.env.DB_HOST     || 'localhost',
-  user:     process.env.DB_USER     || 'root',
-  password: process.env.DB_PASSWORD || 'Razak+10',
-  port:     parseInt(process.env.DB_PORT) || 3306,
+  // Railway provides MYSQLHOST / MYSQLUSER / MYSQLPASSWORD / MYSQLPORT
+  // Standard .env uses DB_HOST / DB_USER / DB_PASSWORD / DB_PORT
+  host:     process.env.DB_HOST     || process.env.MYSQLHOST     || 'localhost',
+  user:     process.env.DB_USER     || process.env.MYSQLUSER     || 'root',
+  password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
+  port:     parseInt(process.env.DB_PORT || process.env.MYSQLPORT) || 3306,
   charset:  'utf8mb4',
   multipleStatements: false,
+  // Railway MySQL requires SSL in production
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
 };
 
 // App pool — used by all API routes

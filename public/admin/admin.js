@@ -46,11 +46,15 @@ document.addEventListener('click', e => {
 });
 
 // ─── API HELPERS ──────────────────────────────
+function getApiBase() {
+  return (typeof window !== 'undefined' && window.API_BASE) ? window.API_BASE : '';
+}
+
 async function api(url, method, body) {
   method = method || 'GET';
   const opts = { method, headers: { 'Content-Type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(url, opts);
+  const r = await fetch(getApiBase() + url, opts);
   const data = await r.json();
   if (!r.ok) throw new Error(data.error || 'HTTP ' + r.status);
   return data;
@@ -401,7 +405,7 @@ async function loadTeam() {
 
     // Show photo if one exists
     if (t.photo) {
-      showPhotoPreview('/images/' + t.photo);
+      showPhotoPreview(getApiBase() + '/images/' + t.photo);
     } else {
       clearPhotoPreview();
     }
@@ -442,11 +446,11 @@ document.getElementById('photoInput')?.addEventListener('change', async function
   formData.append('photo', file);
 
   try {
-    const res  = await fetch('/api/team/photo', { method: 'POST', body: formData });
+    const res  = await fetch(getApiBase() + '/api/team/photo', { method: 'POST', body: formData });
     const data = await res.json();
 
     if (res.ok && data.success) {
-      showPhotoPreview(data.url);
+      showPhotoPreview(getApiBase() + data.url);
       statusEl.textContent = '✓ Photo uploaded! Visible on the public Team page now.';
       statusEl.style.color = '#22c55e';
       setTimeout(() => statusEl.textContent = '', 4000);
@@ -468,7 +472,7 @@ window.removePhoto = async function() {
   if (!confirm('Remove the CEO photo? The initials avatar will be shown instead.')) return;
   const statusEl = document.getElementById('photoStatus');
   try {
-    const res  = await fetch('/api/team/photo', { method: 'DELETE' });
+    const res  = await fetch(getApiBase() + '/api/team/photo', { method: 'DELETE' });
     const data = await res.json();
     if (res.ok && data.success) {
       clearPhotoPreview();

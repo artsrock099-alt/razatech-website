@@ -200,6 +200,7 @@
 <div class="nav-overlay" id="navOverlay"></div>
 
 <script src="../js/global.js"></script>
+<script src="../js/config.js"></script>
 <script src="../js/render.js"></script>
 <script>
 applySettings();
@@ -264,7 +265,8 @@ document.getElementById('contactForm').addEventListener('submit', async function
     message:  getVal('fmessage')
   };
 
-  var apiUrl = window.location.origin + '/contact';
+  var apiBase = (window.API_BASE !== undefined) ? window.API_BASE : '';
+  var apiUrl = apiBase + '/contact';
 
   try {
     var response = await fetch(apiUrl, {

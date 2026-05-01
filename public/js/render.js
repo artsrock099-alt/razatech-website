@@ -5,12 +5,17 @@
    admin changes appear immediately.
    ============================================= */
 
-const API = '';   // same origin — empty string = relative URL
+// API_BASE is set by config.js:
+//   '' on localhost (relative URLs)
+//   'https://your-railway-url.up.railway.app' in production
+function getApiBase() {
+  return (typeof window !== 'undefined' && window.API_BASE) ? window.API_BASE : '';
+}
 
 // ── Fetch with graceful fallback ──────────────
 async function apiFetch(url) {
   try {
-    const r = await fetch(API + url);
+    const r = await fetch(getApiBase() + url);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } catch (e) {
@@ -186,7 +191,7 @@ async function renderTeamPage() {
           <div class="ceo-photo-ring ring-2"></div>
           <div class="ceo-avatar" id="ceoAvatarWrap">
             ${t.photo
-              ? `<img src="/images/${esc(t.photo)}?t=${Date.now()}" alt="${esc(t.full_name)}" class="ceo-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`
+              ? `<img src="${getApiBase()}/images/${esc(t.photo)}?t=${Date.now()}" alt="${esc(t.full_name)}" class="ceo-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`
               : `<div class="ceo-initials-wrap">
                    <span class="ceo-initials">${esc((t.full_name||'RM').split(' ').map(w=>w[0]).join('').slice(0,2))}</span>
                  </div>`
