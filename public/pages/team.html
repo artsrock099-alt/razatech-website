@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team — RazaTech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/pages.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">Raza<span>Tech</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="team.html" class="active">Team</a></li><li><a href="clients.html">Clients</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle"><span class="icon-sun">☀</span><span class="icon-moon">◐</span></button>
+      <a href="contact.html" class="btn btn-primary">Hire Us</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label">Leadership</div>
+    <h1>Meet the <span class="gradient-text">Founder & CEO</span></h1>
+    <p>The visionary behind RazaTech — driving innovation, one breakthrough project at a time.</p>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-primary)">
+  <div class="container">
+    <!-- Populated dynamically by render.js renderTeamPage() -->
+    <div id="ceoWrap" style="color:var(--text-secondary);padding:40px;text-align:center">Loading profile...</div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-grid">
+  <div class="footer-brand"><a href="../index.html" class="nav-logo" style="margin-bottom:16px;display:block">Raza<span>Tech</span></a><p id="footerDesc">Innovative digital solutions for businesses across East Africa.</p><div class="social-links"><a href="#" id="socialTwitter">𝕏</a><a href="#" id="socialLinkedin">in</a><a href="#" id="socialGithub">⌥</a></div></div>
+  <div class="footer-col"><h4>Pages</h4><a href="about.html">About</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="team.html">Team</a><a href="clients.html">Clients</a><a href="contact.html">Contact</a></div>
+  <div class="footer-col"><h4>Services</h4><a href="services.html">Web Development</a><a href="services.html">Blockchain & Web3</a><a href="services.html">IoT & Environmental</a><a href="services.html">Mobile Apps</a></div>
+  <div class="footer-col"><h4>Contact</h4><a href="mailto:razatech@gmail.com" id="footerEmail">razatech@gmail.com</a><a href="tel:+256740072406" id="footerPhone">+256 740 072 406</a><span>Kampala, Uganda</span></div>
+</div><div class="footer-bottom"><span>© 2025 RazaTech. All rights reserved.</span><span>Built with ♥ in Uganda</span></div></div></footer>
+<a href="https://wa.me/256771437244" target="_blank" class="whatsapp-fab"><span>✆</span><div class="fab-tooltip">Chat on WhatsApp</div></a>
+<div class="nav-overlay" id="navOverlay"></div>
+<script src="../js/global.js"></script>
+<script src="../js/render.js"></script>
+<script>applySettings(); renderTeamPage();</script>
+</body>
+</html>

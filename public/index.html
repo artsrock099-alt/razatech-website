@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RazaTech — Innovative Digital Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Raza<span>Tech</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/about.html">About</a></li>
+      <li><a href="pages/services.html">Services</a></li>
+      <li><a href="pages/portfolio.html">Portfolio</a></li>
+      <li><a href="pages/team.html">Team</a></li>
+      <li><a href="pages/clients.html">Clients</a></li>
+      <li><a href="pages/contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle"><span class="icon-sun">☀</span><span class="icon-moon">◐</span></button>
+      <a href="pages/contact.html" class="btn btn-primary">Hire Us</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+    <canvas id="particleCanvas"></canvas>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge fade-up"><span class="pulse-dot"></span> Available for new projects</div>
+    <h1 class="hero-title fade-up"><span>Innovative</span><br/><span class="gradient-text">Digital Solutions</span></h1>
+    <p class="hero-sub fade-up">We build powerful web systems, databases, blockchain platforms,<br class="br-lg"/> and digital products that help businesses grow and operate smarter.</p>
+    <div class="hero-cta fade-up">
+      <a href="pages/contact.html" class="btn btn-primary btn-lg">Hire Us</a>
+      <a href="pages/portfolio.html" class="btn btn-ghost btn-lg">View Our Work</a>
+    </div>
+    <div class="hero-stats fade-up">
+      <div class="stat"><strong id="heroStatProjects">50+</strong><span>Projects Delivered</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong id="heroStatClients">30+</strong><span>Happy Clients</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong id="heroStatYears">5+</strong><span>Years Experience</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong>12+</strong><span>Tech Services</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="home-overview section">
+  <div class="container">
+    <div class="section-label reveal">What We Do</div>
+    <h2 class="section-title reveal">End-to-end <span class="gradient-text">technology partner</span></h2>
+    <p class="section-sub reveal">From concept to production — we build everything your business needs to thrive digitally.</p>
+    <div class="overview-grid">
+      <a href="pages/services.html" class="overview-card glass reveal"><div class="ov-icon">⬡</div><h3>Web & App Development</h3><p>Modern, responsive web apps and mobile applications built with cutting-edge stacks.</p><span class="ov-link">Explore →</span></a>
+      <a href="pages/services.html" class="overview-card glass reveal"><div class="ov-icon">⛓</div><h3>Blockchain & Web3</h3><p>Smart contracts, decentralized voting systems, and DApp platforms on Ethereum.</p><span class="ov-link">Explore →</span></a>
+      <a href="pages/services.html" class="overview-card glass reveal"><div class="ov-icon">🌍</div><h3>IoT & Environmental Tech</h3><p>Real-time sensor monitoring, smart waste systems, and environmental dashboards.</p><span class="ov-link">Explore →</span></a>
+      <a href="pages/services.html" class="overview-card glass reveal"><div class="ov-icon">◫</div><h3>Enterprise Systems</h3><p>SACCO platforms, ERP tools, school portals, and custom business automation.</p><span class="ov-link">Explore →</span></a>
+    </div>
+    <div class="overview-cta reveal"><a href="pages/services.html" class="btn btn-primary">See All Services</a></div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECTS — rendered from API -->
+<section class="home-projects section">
+  <div class="container">
+    <div class="section-label reveal">Featured Work</div>
+    <h2 class="section-title reveal">Projects that <span class="gradient-text">speak for us</span></h2>
+    <div class="featured-grid" id="featuredGrid">
+      <!-- Populated by render.js -->
+      <div class="loading-msg">Loading projects...</div>
+    </div>
+    <div class="overview-cta reveal"><a href="pages/portfolio.html" class="btn btn-ghost">View All Projects</a></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="home-why section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-text reveal">
+        <div class="section-label">Why RazaTech</div>
+        <h2 class="section-title">Built on trust, <span class="gradient-text">delivered with excellence</span></h2>
+        <p>We don't just write code — we become your technology partner. Every project we take on gets our full commitment, from scoping to deployment to ongoing support.</p>
+        <a href="pages/about.html" class="btn btn-primary" style="margin-top:24px">Learn About Us</a>
+      </div>
+      <div class="why-cards reveal">
+        <div class="why-card glass"><div class="why-num">01</div><h4>On-Time Delivery</h4><p>100% of projects delivered on or before the agreed deadline.</p></div>
+        <div class="why-card glass"><div class="why-num">02</div><h4>Clean Code</h4><p>Every line documented, tested, and structured for long-term maintainability.</p></div>
+        <div class="why-card glass"><div class="why-num">03</div><h4>Post-Launch Support</h4><p>We stay with you — bug fixes, updates, and scaling support after go-live.</p></div>
+        <div class="why-card glass"><div class="why-num">04</div><h4>Transparent Pricing</h4><p>Fixed-scope quotes upfront — no hidden fees, ever.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="home-cta-banner">
+  <div class="container">
+    <div class="cta-banner-inner reveal">
+      <h2>Ready to build something <span class="gradient-text">amazing?</span></h2>
+      <p>Tell us about your project and we'll get back to you within 2 hours.</p>
+      <div class="cta-banner-btns">
+        <a href="pages/contact.html" class="btn btn-primary btn-lg">Start a Project</a>
+        <a href="https://wa.me/256771437244" target="_blank" class="btn btn-ghost btn-lg whatsapp-cta-link">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:16px;display:block">Raza<span>Tech</span></a>
+        <p id="footerDesc">Innovative digital solutions for businesses across East Africa and beyond.</p>
+        <div class="social-links">
+          <a href="#" id="socialTwitter" aria-label="Twitter">𝕏</a>
+          <a href="#" id="socialLinkedin" aria-label="LinkedIn">in</a>
+          <a href="#" id="socialGithub" aria-label="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Pages</h4><a href="pages/about.html">About</a><a href="pages/services.html">Services</a><a href="pages/portfolio.html">Portfolio</a><a href="pages/team.html">Team</a><a href="pages/clients.html">Clients</a><a href="pages/contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="pages/services.html">Web Development</a><a href="pages/services.html">Blockchain & Web3</a><a href="pages/services.html">IoT & Environmental</a><a href="pages/services.html">Mobile Apps</a><a href="pages/services.html">IT Consulting</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="mailto:razatech@gmail.com" id="footerEmail">razatech@gmail.com</a><a href="tel:+256740072406" id="footerPhone">+256 740 072 406</a><span>Kampala, Uganda</span></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 RazaTech. All rights reserved.</span><span>Built with ♥ in Uganda</span></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256771437244" target="_blank" class="whatsapp-fab"><span>✆</span><div class="fab-tooltip">Chat on WhatsApp</div></a>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<style>.loading-msg{color:var(--text-secondary);font-size:14px;padding:40px;text-align:center;grid-column:1/-1}</style>
+<script src="js/global.js"></script>
+<script src="js/home.js"></script>
+<script src="js/render.js"></script>
+<script>
+  applySettings();
+  renderHomeFeatured();
+</script>
+</body>
+</html>

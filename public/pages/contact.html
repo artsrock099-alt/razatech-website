@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — RazaTech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/pages.css"/>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">Raza<span>Tech</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle">
+        <span class="icon-sun">☀</span><span class="icon-moon">◐</span>
+      </button>
+      <a href="contact.html" class="btn btn-primary">Hire Us</a>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h1>Let's build something <span class="gradient-text">together</span></h1>
+    <p>Have a project in mind? We respond within 2 hours during business hours.</p>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-primary)">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Quick contact channels -->
+      <div class="contact-channels reveal">
+        <h3>Quick Connect</h3>
+        <a href="https://wa.me/256771437244" target="_blank" class="channel-btn whatsapp">
+          <span class="ch-icon">✆</span>
+          <div><strong>WhatsApp</strong><span>Chat with us now</span></div>
+          <span class="ch-arrow">→</span>
+        </a>
+        <a href="tel:+256740072406" class="channel-btn phone">
+          <span class="ch-icon">☏</span>
+          <div><strong>Phone Call</strong><span>+256 740 072 406</span></div>
+          <span class="ch-arrow">→</span>
+        </a>
+        <a href="mailto:razatech@gmail.com" class="channel-btn email">
+          <span class="ch-icon">✉</span>
+          <div><strong>Email Us</strong><span>razatech@gmail.com</span></div>
+          <span class="ch-arrow">→</span>
+        </a>
+        <div class="contact-info-box glass">
+          <p>📍 Kampala, Uganda</p>
+          <p>⏰ Mon–Sat: 8am – 6pm EAT</p>
+          <p>⚡ Response within 2 hours</p>
+          <p>🔒 NDA available on request</p>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="contact-form-wrap reveal">
+        <h3>Send a Message</h3>
+        <form class="contact-form glass" id="contactForm" novalidate>
+
+          <!-- Row: Full Name + Phone -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="fname">Full Name <span class="req">*</span></label>
+              <input type="text" id="fname" name="name" placeholder="Your full name" required/>
+              <span class="form-error" id="nameErr"></span>
+            </div>
+            <div class="form-group">
+              <label for="fphone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="fphone" name="phone" placeholder="+256 700 000 000" required/>
+              <span class="form-error" id="phoneErr"></span>
+            </div>
+          </div>
+
+          <!-- Row: Email + WhatsApp -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="femail">Email Address <span class="req">*</span></label>
+              <input type="email" id="femail" name="email" placeholder="your@email.com" required/>
+              <span class="form-error" id="emailErr"></span>
+            </div>
+            <div class="form-group">
+              <label for="fwhatsapp">WhatsApp Number</label>
+              <input type="tel" id="fwhatsapp" name="whatsapp" placeholder="+256 700 000 000"/>
+              <span class="form-error" id="whatsappErr"></span>
+            </div>
+          </div>
+
+          <!-- Service -->
+          <div class="form-group">
+            <label for="fservice">Service Interested In</label>
+            <select id="fservice" name="service">
+              <option value="">Select a service...</option>
+              <option>Web Development</option>
+              <option>System Development</option>
+              <option>Blockchain & Web3</option>
+              <option>IoT & Environmental Tech</option>
+              <option>Mobile App Development</option>
+              <option>Database Design</option>
+              <option>Cloud & DevOps</option>
+              <option>IT Consulting</option>
+              <option>Cybersecurity</option>
+              <option>AI & Automation</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label for="fmessage">Message <span class="req">*</span></label>
+            <textarea id="fmessage" name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+            <span class="form-error" id="msgErr"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-loader" style="display:none">Sending...</span>
+          </button>
+
+          <div class="form-success" id="formSuccess" style="display:none">
+            ✓ Message sent! We will get back to you within 2 hours.
+          </div>
+          <div class="form-alert-err" id="formError" style="display:none">
+            Failed to send. Please check your connection and try again.
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="nav-logo" style="margin-bottom:16px;display:block">Raza<span>Tech</span></a>
+        <p id="footerDesc">Innovative digital solutions for businesses across East Africa and beyond.</p>
+        <div class="social-links">
+          <a href="#" id="socialTwitter">𝕏</a>
+          <a href="#" id="socialLinkedin">in</a>
+          <a href="#" id="socialGithub">⌥</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="team.html">Team</a>
+        <a href="clients.html">Clients</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="services.html">Web Development</a>
+        <a href="services.html">Blockchain & Web3</a>
+        <a href="services.html">IoT & Environmental</a>
+        <a href="services.html">Mobile Apps</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:razatech@gmail.com" id="footerEmail">razatech@gmail.com</a>
+        <a href="tel:+256700000000" id="footerPhone">+256 700 000 000</a>
+        <span>Kampala, Uganda</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 RazaTech. All rights reserved.</span>
+      <span>Built with ♥ in Uganda</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256771437244" target="_blank" class="whatsapp-fab">
+  <span>✆</span>
+  <div class="fab-tooltip">Chat on WhatsApp</div>
+</a>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<script src="../js/global.js"></script>
+<script src="../js/render.js"></script>
+<script>
+applySettings();
+
+function getVal(id) {
+  return document.getElementById(id).value.trim();
+}
+function showErr(id, msg) {
+  document.getElementById(id).textContent = msg;
+}
+function clearErrs() {
+  ['nameErr','phoneErr','emailErr','whatsappErr','msgErr'].forEach(function(id) {
+    document.getElementById(id).textContent = '';
+  });
+}
+function validate() {
+  var name  = getVal('fname');
+  var phone = getVal('fphone');
+  var email = getVal('femail');
+  var msg   = getVal('fmessage');
+  var ok    = true;
+  clearErrs();
+
+  if (!name || name.length < 2) {
+    showErr('nameErr', 'Full name is required.'); ok = false;
+  }
+  if (!phone || phone.length < 7) {
+    showErr('phoneErr', 'A valid phone number is required.'); ok = false;
+  }
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRe.test(email)) {
+    showErr('emailErr', 'A valid email address is required.'); ok = false;
+  }
+  if (!msg || msg.length < 10) {
+    showErr('msgErr', 'Message must be at least 10 characters.'); ok = false;
+  }
+  return ok;
+}
+
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  var submitBtn = document.getElementById('submitBtn');
+  var btnText   = submitBtn.querySelector('.btn-text');
+  var btnLoader = submitBtn.querySelector('.btn-loader');
+  var successEl = document.getElementById('formSuccess');
+  var errorEl   = document.getElementById('formError');
+
+  submitBtn.disabled      = true;
+  btnText.style.display   = 'none';
+  btnLoader.style.display = 'inline';
+  successEl.style.display = 'none';
+  errorEl.style.display   = 'none';
+
+  var payload = {
+    name:     getVal('fname'),
+    phone:    getVal('fphone'),
+    email:    getVal('femail'),
+    whatsapp: getVal('fwhatsapp'),
+    service:  document.getElementById('fservice').value,
+    message:  getVal('fmessage')
+  };
+
+  var apiUrl = window.location.origin + '/contact';
+
+  try {
+    var response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    var data = await response.json();
+
+    if (response.ok && data.success) {
+      document.getElementById('contactForm').reset();
+      clearErrs();
+      successEl.textContent   = 'Message sent! We will get back to you within 2 hours.';
+      successEl.style.display = 'block';
+      setTimeout(function() { successEl.style.display = 'none'; }, 7000);
+    } else {
+      errorEl.textContent   = data.error || 'Failed to send. Please try again.';
+      errorEl.style.display = 'block';
+      setTimeout(function() { errorEl.style.display = 'none'; }, 6000);
+    }
+  } catch (err) {
+    console.error('[Contact form] Network error:', err.message);
+    errorEl.textContent   = 'Cannot reach server. Make sure npm start is running.';
+    errorEl.style.display = 'block';
+    setTimeout(function() { errorEl.style.display = 'none'; }, 6000);
+  } finally {
+    submitBtn.disabled      = false;
+    btnText.style.display   = 'inline';
+    btnLoader.style.display = 'none';
+  }
+});
+</script>
+
+</body>
+</html>
