@@ -11,7 +11,7 @@
 
 (function () {
   // ↓↓ PASTE YOUR RAILWAY URL HERE ↓↓
-  var RAILWAY_URL = 'razatech-website-production-d0d4.up.railway.app';
+  var RAILWAY_URL = 'https://razatech-website-production-d0d4.up.railway.app';
   // ↑↑ e.g. 'https://razatech-backend.up.railway.app' ↑↑
 
   window.API_BASE = (
