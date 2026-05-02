@@ -25,8 +25,8 @@
     if (sessionStorage.getItem('rt_admin') === 'true') window.location.href = 'dashboard.html';
     document.getElementById('loginForm').addEventListener('submit', e => {
       e.preventDefault();
-      if (document.getElementById('lu').value.trim() === 'admin' &&
-          document.getElementById('lp').value === 'razatech2025') {
+      if (document.getElementById('lu').value.trim() === 'razatech_admin' &&
+          document.getElementById('lp').value === 'Razak.ug2026') {
         sessionStorage.setItem('rt_admin', 'true');
         window.location.href = 'dashboard.html';
       } else {
