@@ -68,6 +68,9 @@ module.exports = pool;
 
 // ─── CREATE TABLES (DDL — must use query()) ───
 async function createTables(conn) {
+  // Disable strict mode for this session to handle TEXT columns
+  await conn.query(`SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'`);
+
   await conn.query(`
     CREATE TABLE IF NOT EXISTS contacts (
       id         INT           NOT NULL AUTO_INCREMENT,
@@ -104,7 +107,7 @@ async function createTables(conn) {
       icon        VARCHAR(10)  DEFAULT '⬡',
       name        VARCHAR(255) NOT NULL,
       description TEXT         NOT NULL,
-      features    TEXT         DEFAULT '',
+      features    TEXT,
       sort_order  INT          DEFAULT 0,
       created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id)
@@ -117,7 +120,7 @@ async function createTables(conn) {
       initials      VARCHAR(5)   DEFAULT '',
       industry      VARCHAR(255) DEFAULT '',
       gradient      VARCHAR(200) DEFAULT 'linear-gradient(135deg,#1e3a8a,#3b82f6)',
-      testimonial   TEXT         DEFAULT '',
+      testimonial   TEXT,
       contact_name  VARCHAR(255) DEFAULT '',
       contact_title VARCHAR(255) DEFAULT '',
       sort_order    INT          DEFAULT 0,

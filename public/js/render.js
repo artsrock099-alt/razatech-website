@@ -120,7 +120,7 @@ async function renderServicesPage() {
       <h3>${esc(svc.name)}</h3>
       <p>${esc(svc.description)}</p>
       <ul class="service-list">
-        ${svc.features.split(',').map(f => `<li>${esc(f.trim())}</li>`).join('')}
+        ${(svc.features || '').split(',').map(f => `<li>${esc(f.trim())}</li>`).join('')}
       </ul>
       <div class="service-hover-line"></div>
     </div>`).join('');
@@ -146,8 +146,7 @@ async function renderPortfolioPage() {
       </div>
       <div class="project-info">
         <div class="project-tags">
-          ${p.tech.split(',').map(t => `<span>${esc(t.trim())}</span>`).join('')}
-        </div>
+          ${p.tech.split(',').map(t => `<span>${esc(t.trim())}</span>`).join('')}        </div>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.description)}</p>
         <a href="contact.html" class="project-link">Enquire About This →</a>
