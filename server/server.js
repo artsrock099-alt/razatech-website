@@ -54,11 +54,9 @@ app.use(cors({
 app.use(express.json({ limit: '20kb' }));
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 
-// Serve static files only when running locally (not on Railway)
-// On Railway the frontend is served from Vercel
-if (process.env.NODE_ENV !== 'production') {
-  app.use(express.static(path.join(__dirname, '..', 'public')));
-}
+// Serve static files from the public folder in all environments.
+// This makes the app deployable as a single Node/Express backend.
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // ─── SANITIZE ─────────────────────────────────
 function s(str, max) {

@@ -26,6 +26,7 @@ window.addEventListener('scroll', () => {
 const hamburger  = document.getElementById('hamburger');
 const navLinks   = document.getElementById('navLinks');
 const navOverlay = document.getElementById('navOverlay');
+const navClose   = document.getElementById('navClose');
 
 function closeNav() {
   navLinks?.classList.remove('open');
@@ -40,6 +41,7 @@ hamburger?.addEventListener('click', () => {
   navOverlay?.classList.toggle('active', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
 });
+navClose?.addEventListener('click', closeNav);
 navOverlay?.addEventListener('click', closeNav);
 navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
 
