@@ -54,10 +54,10 @@ h1,h2,h3,h4{font-family:'Syne',sans-serif}
 /* NAVBAR */
 .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.5px solid var(--border-color);transition:all .3s}
 .navbar.scrolled{box-shadow:0 4px 20px rgba(0,0,0,0.2)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;gap:20px}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text-primary);text-decoration:none;flex-shrink:0}
 .nav-logo span{color:var(--accent)}
-.nav-links{display:flex;list-style:none;gap:2px;margin-left:auto}
+.nav-links{display:flex;list-style:none;gap:2px;margin:0;flex:1;justify-content:center}
 .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;transition:all .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--text-primary);background:var(--bg-glass)}
 .nav-links a.active{color:var(--accent)}
@@ -117,20 +117,29 @@ h1,h2,h3,h4{font-family:'Syne',sans-serif}
 /* RESPONSIVE */
 @media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:768px){
-  .nav-links{position:fixed;top:68px;left:-260px;bottom:0;width:260px;background:var(--nav-bg);flex-direction:column;padding:24px;gap:4px;border-right:.5px solid var(--border-color);transition:left .3s;z-index:999}
+  .nav-inner{max-width:100%;padding:0 16px}
+  .nav-links{position:fixed;top:68px;left:-260px;bottom:0;width:260px;background:var(--nav-bg);flex-direction:column;padding:24px;gap:4px;border-right:.5px solid var(--border-color);transition:left .3s;z-index:999;margin:0;justify-content:flex-start}
   .nav-links.open{left:0}
-  .nav-links a{padding:14px 16px;border-radius:10px}
+  .nav-links a{padding:14px 16px;border-radius:10px;font-size:14px}
   .hamburger{display:flex}
   .nav-actions .btn-primary{display:none}
-  .section{padding:70px 0}
+  .nav-actions{gap:8px}
+  .section{padding:60px 0}
   .footer-grid{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:480px){
-  .page-hero{padding:120px 0 60px}
+  .nav-inner{padding:0 12px}
+  .nav-logo{font-size:18px}
   .nav-links{width:240px;padding:20px}
-  .nav-links a{padding:12px 14px;font-size:15px}
+  .nav-links a{padding:12px 14px;font-size:13px}
   .nav-close{padding-bottom:12px}
   #navClose{font-size:20px}
+  .theme-toggle{width:36px;height:36px;font-size:14px}
+  .page-hero{padding:100px 0 50px}
+  .page-hero h1{font-size:clamp(1.8rem,4vw,2.5rem)}
+  .page-hero p{font-size:0.9rem}
+  .section{padding:50px 0}
+  .container{padding:0 16px}
 }
 
 /* ── Admin access link in footer ───────────────
