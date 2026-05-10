@@ -35,8 +35,11 @@
 
 /* ABOUT PAGE */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px}
+.about-grid > *{min-width:0}
 .about-text p{color:var(--text-secondary);line-height:1.8;margin-bottom:16px}
 .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.core-values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.core-values-grid > *{min-width:0}
 .mv-card{padding:24px}
 .mv-icon{font-size:24px;margin-bottom:12px;color:var(--accent)}
 .mv-card h4{font-size:15px;font-weight:600;margin-bottom:8px}
@@ -127,8 +130,8 @@
 
 /* RESPONSIVE inner pages */
 @media(max-width:1024px){.services-grid{grid-template-columns:repeat(2,1fr)}.ceo-card{grid-template-columns:1fr}.ceo-photo-col{border-right:none;border-bottom:.5px solid var(--border-color)}.ceo-stats-row{grid-template-columns:repeat(2,1fr)}.testimonials-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:48px}.portfolio-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}.services-grid{grid-template-columns:1fr}.mv-grid{grid-template-columns:1fr}.testimonials-grid{grid-template-columns:1fr}.trust-strip{padding:20px 16px}.trust-item{padding:8px 20px}.trust-divider{display:none}.ceo-info-col{padding:32px 24px}.ceo-stats-row{grid-template-columns:repeat(2,1fr)}}
-
+@media(max-width:1024px){.core-values-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:48px}.portfolio-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}.services-grid{grid-template-columns:1fr}.mv-grid{grid-template-columns:1fr}.testimonials-grid{grid-template-columns:1fr}.trust-strip{padding:20px 16px}.trust-item{padding:8px 20px}.trust-divider{display:none}.ceo-info-col{padding:32px 24px}.ceo-stats-row{grid-template-columns:repeat(2,1fr)}.core-values-grid{grid-template-columns:1fr}}
 /* ── Contact form 2-column row ────────────────── */
 .form-row-2 {
   display: grid;
